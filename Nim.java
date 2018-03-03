@@ -10,6 +10,11 @@ public class Nim {
     Scanner input = new Scanner(System.in);
     int userGuess;
 
+    //variable for a smart Nim
+    boolean smartNim = true;
+    int cpuGuess;
+    int[] pow2s = {1,2,4,8,16,32,64,128};
+
     //variable for who's turn it is
     boolean humanTurn; //true means it is the human's turn
 
@@ -30,6 +35,26 @@ public class Nim {
         userGuess = input.nextInt();
         pileSize -= userGuess;
       } else {
+        if (smartNim) {
+          int maxGuess = pileSize/2;
+          boolean found = false;
+          int i = pow2s.length-1;
+
+          while(i >= 0) {
+            if (pileSize-pow2s[i] + 1 <= maxGuess) {
+              found = true;
+              break;
+            }
+          }
+          i--;
+
+          if(found){
+            cpuGuess = pileSize - pow2s[i] + 1;
+            pileSize -= cpuGuess;
+          } else {
+            pileSize -= Math.random()*(pileSize/2)+1;
+          }
+        }
         pileSize -= Math.random()*(pileSize/2)+1;
       }
 
